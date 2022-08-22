@@ -1,0 +1,2 @@
+6.1 Написание простого цикла
+https://replit.com/@GieorghiiZaporo/simpleCycle?v=1

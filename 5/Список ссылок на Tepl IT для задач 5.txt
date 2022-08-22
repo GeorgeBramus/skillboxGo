@@ -1,0 +1,20 @@
+5.1 Определение координатной плоскости точки
+https://replit.com/@GieorghiiZaporo/coordinatePlane-1?v=1
+
+5.2 Проверить, что одно из чисел — положительное
+https://replit.com/@GieorghiiZaporo/searchPositiveNun?v=1
+
+5.3 Проверить, что есть совпадающие числа
+https://replit.com/@GieorghiiZaporo/anyMatchingNumbers?v=1
+
+5.4 Сумма без сдачи
+https://replit.com/@GieorghiiZaporo/amountWithoutChange?v=1
+
+5.5 Решение квадратного уравнения
+https://replit.com/@GieorghiiZaporo/solutioQuadraticEquation?v=1
+
+5.6 Счастливый билет
+https://replit.com/@GieorghiiZaporo/happyTicket?v=1
+
+5.7 Игра «Угадай число»
+https://replit.com/@GieorghiiZaporo/guessTheNumberGame?v=1

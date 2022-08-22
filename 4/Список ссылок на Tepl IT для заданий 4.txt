@@ -1,0 +1,17 @@
+Задание 1. Баллы ЕГЭ
+https://replit.com/@GieorghiiZaporo/USE?v=1
+
+Задание 2. Три числа
+https://replit.com/@GieorghiiZaporo/Three-numbers?v=1
+
+Задание 3. Банкомат
+https://replit.com/@GieorghiiZaporo/ATM?v=1
+
+Задание 4. Три числа: ещё попытка
+https://replit.com/@GieorghiiZaporo/three-numbers-2?v=1
+
+Задание 5. Ресторан
+https://replit.com/@GieorghiiZaporo/Rest?v=1
+
+Задание 6. Студенты
+https://replit.com/@GieorghiiZaporo/student-search?v=1
