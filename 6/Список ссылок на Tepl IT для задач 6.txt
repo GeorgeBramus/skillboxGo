@@ -1,2 +1,11 @@
 6.1 Написание простого цикла
 https://replit.com/@GieorghiiZaporo/simpleCycle?v=1
+
+6.2 Сумма двух чисел по единице
+https://replit.com/@GieorghiiZaporo/sumNumbers?v=1
+
+6.3 Расчёт суммы скидки
+https://replit.com/@GieorghiiZaporo/discount?v=1
+
+6.4 Предыдущее занятие на if
+https://replit.com/@GieorghiiZaporo/iteration?v=1
