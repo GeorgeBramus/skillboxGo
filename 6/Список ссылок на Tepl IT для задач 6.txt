@@ -12,3 +12,6 @@ https://replit.com/@GieorghiiZaporo/iteration?v=1
 
 6.5 Задача на постепенное наполнение корзин разной ёмкости (if и continue и break)
 https://replit.com/@GieorghiiZaporo/fillingBaskets?v=1
+
+6.6 Движение лифта
+https://replit.com/@GieorghiiZaporo/elevator?v=1
