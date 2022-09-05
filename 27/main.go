@@ -14,9 +14,13 @@ type Students struct {
 	age, grade int
 }
 
+func newStudent(students *Students, name string, age, grade int) {
+
+}
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	students := make(map[int]struct{})
+	students := make(map[string]Students)
 	i := 0
 	for scanner.Scan() {
 		if scanner.Err() == io.EOF {
@@ -26,15 +30,19 @@ func main() {
 		i++
 		studentCharacteristics := strings.Split(scanner.Text(), " ")
 
+		name := studentCharacteristics[0]
 		age, _ := strconv.Atoi(studentCharacteristics[1])
 		grade, _ := strconv.Atoi(studentCharacteristics[2])
 
-		students[i] = Students{
-			name:  studentCharacteristics[0],
+		students[name] = Students{
+			name:  name,
 			age:   age,
 			grade: grade,
 		}
 	}
 
-	fmt.Println(students)
+	fmt.Println()
+	for name, characteristics := range students {
+		fmt.Printf("%s\t%v\n", name, characteristics)
+	}
 }
