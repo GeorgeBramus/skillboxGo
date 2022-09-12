@@ -88,7 +88,7 @@ func fail() {
 func main() {
 	// var cont string
 
-	fmt.Print("Загадайте число от 1 до 10")
+	fmt.Print("Загадайте число от 1 до 26")
 	pause(".", 3, 300)
 	proceed("Нажмите Enter для продолжения")
 
