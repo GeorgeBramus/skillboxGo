@@ -12,16 +12,13 @@ func lemonadeChange(bills []int) bool {
 		case 5:
 			five++
 		case 10:
-			ten++
-		}
-		if bill == 10 {
 			if five > 0 {
 				five--
 				continue
 			} else {
 				return false
 			}
-		} else if bill == 20 {
+		case 20:
 			if ten > 0 && five > 0 {
 				five--
 				ten--
@@ -33,7 +30,6 @@ func lemonadeChange(bills []int) bool {
 				return false
 			}
 		}
-
 	}
 	return true
 }

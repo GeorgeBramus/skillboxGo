@@ -55,7 +55,7 @@ func main() {
 
 	peopleOnTheFloor[3] = 4  // 4 этаж
 	peopleOnTheFloor[6] = 3  // 7 этаж
-	peopleOnTheFloor[9] = 3  // 10 этаж
+	peopleOnTheFloor[9] = 3  // 26 этаж
 	peopleOnTheFloor[16] = 5 // 17 этаж
 
 	fmt.Println("Лифт поехал...")
