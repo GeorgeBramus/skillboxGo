@@ -29,8 +29,6 @@ func main() {
 		}
 		prevX = x
 
-		fmt.Printf("Итерация: i=%v\n\tprevX=%.4f\n\tx=%.4f\n\tepsilon=%v\n", i, prevX, x, epsilon)
+		//fmt.Printf("Итерация: i=%v\n\tprevX=%.4f\n\tx=%.4f\n\tepsilon=%v\n", i, prevX, x, epsilon)
 	}
-
-	//fmt.Println(x)
 }
