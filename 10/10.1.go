@@ -20,17 +20,15 @@ func main() {
 	_, _ = fmt.Scan(&n)
 
 	epsilon := 1 / math.Pow(10, n)
-	prevX := 0.0
-	for i := 0; i < 7; i++ {
-		x = math.Pow(x, float64(i)) / factorial(float64(i))
-		if i > 1 && math.Abs(x-prevX) < epsilon {
-			fmt.Println(x)
+	resultX, prevX := 1.0+epsilon*2, 1.0
+	for i := 1; i < 50; i++ {
+		if math.Abs(resultX-prevX) < epsilon {
+			fmt.Println(resultX - epsilon*2)
 			break
 		}
-		prevX = x
+		prevX = resultX
+		resultX += math.Pow(x, float64(i)) / factorial(float64(i))
 
-		fmt.Printf("Итерация: i=%v\n\tprevX=%.4f\n\tx=%.4f\n\tepsilon=%v\n", i, prevX, x, epsilon)
+		fmt.Printf("Итерация: i=%v\n\tprevX=%.4f\n\tresultX=%.4f\n\tepsilon=%v\n", i, prevX, resultX, epsilon)
 	}
-
-	//fmt.Println(x)
 }
