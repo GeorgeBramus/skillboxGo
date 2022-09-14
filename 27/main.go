@@ -14,12 +14,13 @@ type Students struct {
 	age, grade int
 }
 
-func newStudent(students [name]Students, name string, age, grade int) {
-	students[name] = Students{
+func newStudent(name string, age, grade int) Students {
+	student := Students{
 		name:  name,
 		age:   age,
 		grade: grade,
 	}
+	return student
 }
 
 func stringParsing(str string) (string, int, int) {
@@ -32,7 +33,7 @@ func stringParsing(str string) (string, int, int) {
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
-	students := make(map[string]*Students)
+	students := make(map[string]Students)
 	i := 0
 	for scanner.Scan() {
 		if scanner.Err() == io.EOF {
@@ -41,7 +42,7 @@ func main() {
 
 		i++
 		name, age, grade := stringParsing(scanner.Text())
-		newStudent(students, name, age, grade)
+		students[name] = newStudent(name, age, grade)
 
 	}
 
