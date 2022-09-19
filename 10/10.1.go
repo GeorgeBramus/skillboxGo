@@ -20,10 +20,10 @@ func main() {
 	_, _ = fmt.Scan(&n)
 
 	epsilon := 1 / math.Pow(10, n)
-	resultX, prevX := 1.0+epsilon*2, 1.0
+	resultX, prevX := 1.0, 0.0
 	for i := 1; i < 50; i++ {
 		if math.Abs(resultX-prevX) < epsilon {
-			fmt.Println(resultX - epsilon*2)
+			fmt.Println(resultX)
 			break
 		}
 		prevX = resultX
