@@ -39,7 +39,7 @@ func main() {
 		fmt.Print("Ещё сообщение? Или выйти? (exit): ")
 	}
 
-	if err := ioutil.WriteFile(fileName, b.Bytes, 0666); err != nil {
+	if err := ioutil.WriteFile(fileName, b.Bytes(), 0666); err != nil {
 		panic(err)
 	}
 
