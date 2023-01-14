@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"time"
 )
 
 /*
@@ -12,14 +11,7 @@ import (
 
 const size = 10
 
-func invertingTheArray(a [size]int) (rev []int) {
-	for i := size - 1; i >= 0; i-- {
-		rev = append(rev, a[i])
-	}
-	return
-}
-
-func bubbleSort(a [size]int) [size]int {
+func bubbleSort(a [size]int) func(bool) []int {
 	for i := size; i > 0; i-- {
 		for j := 1; j < i; j++ {
 			if a[j-1] > a[j] {
@@ -27,7 +19,18 @@ func bubbleSort(a [size]int) [size]int {
 			}
 		}
 	}
-	return a
+
+	return func(reverse bool) []int {
+		if reverse {
+			var rev []int
+
+			for i := size - 1; i >= 0; i-- {
+				rev = append(rev, a[i])
+			}
+			return rev
+		}
+		return a[:]
+	}
 }
 
 func main() {
@@ -37,13 +40,9 @@ func main() {
 	fmt.Println(a)
 	fmt.Println()
 
+	bubble := bubbleSort(a)
 	fmt.Println("Сортировка пузырьком")
-	start := time.Now()
-	fmt.Println(bubbleSort(a))
-	fmt.Println("Время выполнения", time.Since(start))
-	fmt.Println()
-
-	fmt.Println("Перевернём массив")
-	fmt.Println(invertingTheArray(bubbleSort(a)))
-
+	fmt.Println(bubble(false))
+	fmt.Println("Перевернём")
+	fmt.Println(bubble(true))
 }
