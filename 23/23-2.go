@@ -12,6 +12,13 @@ import (
 
 const size = 10
 
+func invertingTheArray(a [size]int) (rev []int) {
+	for i := size - 1; i >= 0; i-- {
+		rev = append(rev, a[i])
+	}
+	return
+}
+
 func bubbleSort(a [size]int) [size]int {
 	for i := size; i > 0; i-- {
 		for j := 1; j < i; j++ {
@@ -34,4 +41,9 @@ func main() {
 	start := time.Now()
 	fmt.Println(bubbleSort(a))
 	fmt.Println("Время выполнения", time.Since(start))
+	fmt.Println()
+
+	fmt.Println("Перевернём массив")
+	fmt.Println(invertingTheArray(bubbleSort(a)))
+
 }
