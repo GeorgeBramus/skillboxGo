@@ -28,15 +28,13 @@ func main() {
 	n := 0
 	fmt.Scan(&n)
 
-	count := 0
-	found := false
+	index := 0
 	for i := 0; i < size; i++ {
-		if found {
-			count++
-		} else if numbers[i] == n {
-			found = true
+		if numbers[i] == n {
+			index = i
 		}
 	}
+	count := len(numbers) - index - 1
 
 	fmt.Println("Количество чисел в массиве после указанного:", count)
 }
