@@ -11,8 +11,8 @@ func main() {
 	// ***
 	// Вводные
 
-	sentences := []string{"First sentence", "второе предложение", "Третье предложение"}
-	chars := []rune{'s', 'п', 'n', 'о', 'р'}
+	sentences := []string{"First sentence", "Запуск ракеты", "Яркое солнце"}
+	chars := []rune{'s', 'р', 'n', 'н', 'т', 'ц'}
 
 	// ***
 	// Определим размер двумерного слайса по массиву с предложениями
@@ -46,12 +46,15 @@ func main() {
 	for i, sentence := range sentences {
 		words := strings.Split(sentence, " ")
 		lastWord := words[len(words)-1]
+		fmt.Println(lastWord)
+		// rLastWord := []rune(lastWord)
 
 		for j, char := range chars {
-			indexChar := strings.Index(lastWord, string(char))
-			if indexChar >= 0 {
-				positions[i][j] = indexChar
-				fmt.Printf("СОВПАЛО [%v][%v] %v %v\n", i, j, string(char), indexChar)
+			for letterIndex, letterInTheWord := range lastWord {
+				if letterInTheWord == char {
+					positions[i][j] = letterIndex
+					fmt.Printf("СОВПАЛО [%v][%v] символ=%v буква=%v %v\n", i, j, string(char), string(letterInTheWord), letterIndex)
+				}
 			}
 		}
 	}
