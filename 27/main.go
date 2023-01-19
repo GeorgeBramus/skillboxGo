@@ -14,6 +14,7 @@ type Students struct {
 	age, grade int
 }
 
+// newStudent добавление нового студента в хранилище
 func newStudent(name string, age, grade int) Students {
 	student := Students{
 		name:  name,
@@ -23,6 +24,8 @@ func newStudent(name string, age, grade int) Students {
 	return student
 }
 
+// stringParsing разбор строки из терминала
+// которую принимаю от пользователя
 func stringParsing(str string) (string, int, int) {
 	studentCharacteristics := strings.Split(str, " ")
 	name := studentCharacteristics[0]
