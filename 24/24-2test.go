@@ -47,10 +47,11 @@ func main() {
 		words := strings.Split(sentence, " ")
 		lastWord := words[len(words)-1]
 		fmt.Println(lastWord)
-		// rLastWord := []rune(lastWord)
+		rLastWord := []rune(lastWord)
+		// bLastWord := []byte(lastWord)
 
 		for j, char := range chars {
-			for letterIndex, letterInTheWord := range lastWord {
+			for letterIndex, letterInTheWord := range rLastWord {
 				if letterInTheWord == char {
 					positions[i][j] = letterIndex
 					fmt.Printf("СОВПАЛО [%v][%v] символ=%v буква=%v %v\n", i, j, string(char), string(letterInTheWord), letterIndex)
@@ -65,4 +66,19 @@ func main() {
 	for i := range positions {
 		fmt.Println(positions[i])
 	}
+
+	// ***
+	// Массивы кодоовых точек
+
+	words := strings.Split(sentences[0], " ")
+	lastWord := words[len(words)-1]
+
+	rLastWord := []rune(lastWord)
+	bLastWord := []byte(lastWord)
+
+	fmt.Println()
+	fmt.Println("Руны")
+	fmt.Println(rLastWord)
+	fmt.Println("Байты")
+	fmt.Println(bLastWord)
 }
