@@ -170,7 +170,7 @@ func (s *service) Friends(w http.ResponseWriter, r *http.Request) {
 	user = s.store[id]
 	userFriends := ""
 	for _, friend := range user.Friends {
-		userFriends += "&emsp;&bull; " + friend + "\n"
+		userFriends += " - " + friend + "\n"
 	}
 
 	w.WriteHeader(http.StatusOK)
