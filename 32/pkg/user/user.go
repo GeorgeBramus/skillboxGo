@@ -234,6 +234,51 @@ func Friends(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// Update - Обновение возраста пользователя
+func Update(w http.ResponseWriter, r *http.Request) {
+	db := database.Initial()
+	userID, _ := strconv.Atoi(fmt.Sprintf("%v", chi.URLParam(r, "user_id")))
+	id := uint64(userID)
+
+	// Читаю запрос
+	// {"new age":28}
+	content, err := ioutil.ReadAll((r.Body))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	defer r.Body.Close()
+
+	type Update struct {
+		Age int `json:"new age"`
+	}
+
+	var update Update
+
+	if err := json.Unmarshal(content, &update); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	userName, userExistsErr := findName(id)
+	if userExistsErr != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Пользователь не найден\n"))
+		return
+	}
+
+	var user model.User
+	db.Where("id = ?", id).First(&user)
+	user.Age = uint8(update.Age)
+	db.Save(&user)
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Возраст пользователя " + userName + " успешно обновлён\n"))
+	return
+}
+
 // GetAll - Получение всех пользователей
 func GetAll(w http.ResponseWriter, r *http.Request) {
 	db := database.Initial()

@@ -25,17 +25,9 @@ func main() {
 	r.Post("/make_friends", user.MakeFriends)
 	r.Delete("/user", user.DeleteUser)
 	r.Get("/friends/{user_id}", user.Friends)
+	r.Put("/{user_id}", user.Update)
 
 	r.Get("/get", user.GetAll)
 
-	// name := "George"
-	// if id, err := user.Find(name); err != nil {
-	// 	log.Error(err)
-	// 	fmt.Println("Пользователь", name, "не найден")
-	// } else {
-	// 	fmt.Println("ID пользователя", name+":", id)
-	// }
-
 	http.ListenAndServe("localhost:8080", r)
-
 }
