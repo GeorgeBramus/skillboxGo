@@ -24,6 +24,7 @@ func main() {
 	r.Post("/create", user.Create)
 	r.Post("/make_friends", user.MakeFriends)
 	r.Delete("/user", user.DeleteUser)
+	r.Get("/friends/{user_id}", user.Friends)
 
 	r.Get("/get", user.GetAll)
 

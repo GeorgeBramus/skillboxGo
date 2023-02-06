@@ -11,6 +11,7 @@ import (
 	"skillbox/pkg/logs"
 	"skillbox/pkg/model"
 
+	"github.com/go-chi/chi"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -27,7 +28,8 @@ func init() {
 // Create Создание юзера
 func Create(w http.ResponseWriter, r *http.Request) {
 	db := database.Initial()
-	// Читаю отправленный запрос
+	// Читаю запрос
+	// {"name":"some name","age":24,"friends":[]}
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -88,6 +90,8 @@ func Create(w http.ResponseWriter, r *http.Request) {
 // MakeFriends - Подружить двух пользователей
 func MakeFriends(w http.ResponseWriter, r *http.Request) {
 	db := database.Initial()
+	// Читаю запрос
+	// {"source_id":1,"target_id":2}
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -131,6 +135,8 @@ func MakeFriends(w http.ResponseWriter, r *http.Request) {
 // DeleteUser Удаление юзера по id
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	db := database.Initial()
+	// Читаю запрос
+	// {"target_id":1}
 	content, err := ioutil.ReadAll((r.Body))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -193,6 +199,38 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Пользователь " + userName + " удалён\n" + messageAboutRemovingFriends))
 
+	return
+}
+
+// Friends - Показать всех друзей конкретного пользователя
+func Friends(w http.ResponseWriter, r *http.Request) {
+	db := database.Initial()
+	// Читаю запрос
+	userID, _ := strconv.Atoi(fmt.Sprintf("%v", chi.URLParam(r, "user_id")))
+	id := uint64(userID)
+
+	userName, userExistsErr := findName(id)
+	if userExistsErr != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Пользователь не найден\n"))
+		return
+	}
+
+	// type Friends struct {
+	// 	FriendId uint64 `json:"friend_id"`
+	// }
+	var f []model.Friends
+
+	db.Where("user_id = ?", id).Find(&f)
+
+	userFriends := ""
+	for _, friend := range f {
+		friendName, _ := findName(friend.FriendId)
+		userFriends += " - " + friendName + "\n"
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Друзья пользователя " + userName + "\n" + userFriends + "\n"))
 	return
 }
 
