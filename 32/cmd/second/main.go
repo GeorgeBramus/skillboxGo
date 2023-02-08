@@ -18,6 +18,7 @@ func main() {
 	// db := database.Initial()
 	r := chi.NewRouter()
 
+	r.Use(Mid)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
@@ -29,5 +30,12 @@ func main() {
 
 	r.Get("/get", user.GetAll)
 
-	http.ListenAndServe("localhost:8080", r)
+	http.ListenAndServe("localhost:8081", r)
+}
+
+func Mid(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("-> Ответил 2й сервер\n"))
+		next.ServeHTTP(w, r)
+	})
 }
