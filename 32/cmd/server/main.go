@@ -1,13 +1,16 @@
 package main
 
 import (
+	"flag"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"skillbox/pkg/logs"
 	user "skillbox/pkg/user"
 
 	"github.com/go-chi/chi"
-	// log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 func init() {
@@ -15,7 +18,20 @@ func init() {
 }
 
 func main() {
-	// db := database.Initial()
+	v := viper.New()
+	v.SetConfigFile("config/config.yml")
+	v.ReadInConfig()
+
+	server := ""
+	flag.StringVar(&server, "s", "first", "which server up of two")
+	flag.Parse()
+
+	host := v.GetString("server." + server + ".host")
+	port := v.GetInt("server." + server + ".port")
+
+	portStr := strconv.Itoa(port)
+	lis := host + ":" + portStr
+
 	r := chi.NewRouter()
 
 	r.Use(Mid)
@@ -30,12 +46,22 @@ func main() {
 
 	r.Get("/get", user.GetAll)
 
-	http.ListenAndServe("localhost:8081", r)
+	http.ListenAndServe(lis, r)
 }
 
 func Mid(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("-> Ответил 2й сервер\n"))
+		server := r.Host
+		serverSplit := strings.Split(server, ":")
+		port := serverSplit[1]
+
+		if port == "8081" {
+			server = "second"
+		} else {
+			server = "first"
+		}
+
+		w.Write([]byte("-> the " + server + " server speaks\n"))
 		next.ServeHTTP(w, r)
 	})
 }

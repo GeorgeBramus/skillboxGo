@@ -1,0 +1,7 @@
+server:
+  first:
+    host: "localhost"
+    port: 8080
+  second:
+    host: "localhost"
+    port: 8081
