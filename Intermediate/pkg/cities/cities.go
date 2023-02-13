@@ -1,9 +1,13 @@
-package csv
+package cities
 
 import (
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/gocarina/gocsv"
 )
 
@@ -16,7 +20,8 @@ type Cities struct {
 	Foundation uint16 `csv:"foundation"`
 }
 
-func NewCities(citiesFile *os.File) ([]*Cities, error) {
+// Инициализация
+func New(citiesFile *os.File) ([]*Cities, error) {
 	cities := []*Cities{}
 	if err := gocsv.UnmarshalFile(citiesFile, &cities); err != nil {
 		return nil, err
@@ -24,13 +29,31 @@ func NewCities(citiesFile *os.File) ([]*Cities, error) {
 	return cities, nil
 }
 
-func GetInfo(cities []*Cities, id uint64) (*Cities, error) {
-	for _, city := range cities {
-		if uint64(city.Id) == id {
-			return city, nil
-		}
+func GetInfo(w http.ResponseWriter, r *http.Request) {
+	// ожидается id города
+	// {"id": 744}
+	content, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
 	}
-	return nil, fmt.Errorf("Город с идентификатором %v не найден.", id)
+	defer r.Body.Close()
+
+	cityId, _ := strconv.Atoi(fmt.Sprintf("%v", chi.URLParam(r, "id")))
+	id := uint64(cityId)
+
+	// for _, city := range cities {
+	// 	if uint64(city.Id) == id {
+	// 		return city, nil
+	// 	}
+	// }
+	// return nil, fmt.Errorf("Город с идентификатором %v не найден.", id)
+
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Пользователи " + userName + " и " + friendName + " стали друзьями\n"))
+	return
 }
 
 // func main() {

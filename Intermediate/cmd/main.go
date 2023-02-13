@@ -1,22 +1,27 @@
 package main
 
 import (
-	city "city/pkg/csv"
+	"city/pkg/storage"
 	"fmt"
-	"os"
 )
 
 func main() {
 	var id uint64 = 744
 
-	citiesFile, err := os.OpenFile("data/cities.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		panic(err)
+	// массив структур
+	cities, _ := storage.New()
+
+	for _, city := range cities {
+		if city.Id == id {
+			fmt.Println(city.Name)
+			break
+		}
 	}
-	defer citiesFile.Close()
 
-	cities, _ := city.NewCities(citiesFile)
-	city, _ := city.GetInfo(cities, id)
+	// r := chi.NewRouter()
 
-	fmt.Println(city)
+	// r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	w.Write([]byte("welcome"))
+	// })
+	// r.Get("/cities/{city_id}", cities.GetInfo)
 }
