@@ -114,9 +114,65 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// Delete - Удаление информации о городе по id
+func Delete(w http.ResponseWriter, r *http.Request) {
+	// Читаю запрос
+	// {"city_id":1}
+	content, err := ioutil.ReadAll((r.Body))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("> " + err.Error()))
+		return
+	}
+	defer r.Body.Close()
+
+	type delete struct {
+		Id uint64 `json:"city_id"`
+	}
+
+	var cityForRemoval delete
+
+	if err := json.Unmarshal(content, &cityForRemoval); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	var (
+		cityFound bool
+		cityName  string
+		cityId    uint64
+	)
+	for i, city := range storage {
+		if city.Id == cityForRemoval.Id {
+			cityFound = true
+			cityName = city.Name
+			cityId = city.Id
+			storage = removalFromSlice(storage, i)
+			break
+		}
+	}
+
+	if !cityFound {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Город с таким ID не найден\n"))
+		return
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Информация о городе " + cityName + " с ID[" + strconv.Itoa(int(cityId)) + "] была удалена.\n"))
+	return
+}
+
 // ***
 // Хелперы
 
 func toRow(city *model.City) string {
 	return "<tr><td>" + strconv.Itoa(int(city.Id)) + "</td><td>" + city.Name + "</td><td>" + city.Region + "</td><td>" + city.District + "</td><td>" + strconv.Itoa(int(city.Population)) + "</td><td>" + strconv.Itoa(int(city.Foundation)) + "</td></tr>"
+}
+
+func removalFromSlice(slice []*model.City, index int) []*model.City {
+	slice[len(slice)-1], slice[index] = slice[index], slice[len(slice)-1]
+	return slice[:len(slice)-1]
 }
