@@ -17,10 +17,10 @@ func main() {
 	r.Get("/city/{city_id}", storage.GetRecordById)
 	r.Post("/create", storage.Create)
 	r.Delete("/delete", storage.Delete)
+	r.Put("/update/{city_id}", storage.Update)
 
 	// r.Post("/make_friends", storage.MakeFriends)
 	// r.Get("/friends/{user_id}", storage.Friends)
-	// r.Put("/{user_id}", storage.Update)
 
 	http.ListenAndServe("localhost:8080", r)
 }

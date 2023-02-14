@@ -143,6 +143,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		cityName  string
 		cityId    uint64
 	)
+
 	for i, city := range storage {
 		if city.Id == cityForRemoval.Id {
 			cityFound = true
@@ -162,6 +163,59 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Информация о городе " + cityName + " с ID[" + strconv.Itoa(int(cityId)) + "] была удалена.\n"))
+	return
+}
+
+// Update - Обновение информации о численности населения города по указанному id
+func Update(w http.ResponseWriter, r *http.Request) {
+	cityId, _ := strconv.Atoi(fmt.Sprintf("%v", chi.URLParam(r, "city_id")))
+	id := uint64(cityId)
+
+	// Читаю запрос
+	// {"new_population":1234567}
+	content, err := ioutil.ReadAll((r.Body))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	defer r.Body.Close()
+
+	type Update struct {
+		Population uint `json:"new_population"`
+	}
+
+	var update Update
+
+	if err := json.Unmarshal(content, &update); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	var (
+		cityFound                    bool
+		oldPopulation, newPopulation uint
+	)
+
+	for _, city := range storage {
+		if city.Id == id {
+			cityFound = true
+			oldPopulation = city.Population
+			city.Population = update.Population
+			newPopulation = city.Population
+			break
+		}
+	}
+
+	if !cityFound {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("Город с таким ID не найден\n"))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Информация Population обновллена\nБыло: " + strconv.Itoa(int(oldPopulation)) + "\nСтало: " + strconv.Itoa(int(newPopulation)) + "\n"))
 	return
 }
 
