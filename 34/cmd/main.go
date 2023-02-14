@@ -13,14 +13,14 @@ func main() {
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("welcome"))
 	})
+	r.Get("/cities", storage.GetAll)
+	r.Get("/city/{city_id}", storage.GetRecordById)
+
 	// r.Post("/create", storage.Create)
 	// r.Post("/make_friends", storage.MakeFriends)
 	// r.Delete("/user", storage.DeleteUser)
 	// r.Get("/friends/{user_id}", storage.Friends)
 	// r.Put("/{user_id}", storage.Update)
-
-	r.Get("/cities", storage.GetAll)
-	r.Get("/city/{city_id}", storage.GetRecordById)
 
 	http.ListenAndServe("localhost:8080", r)
 }

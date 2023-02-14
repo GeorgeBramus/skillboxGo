@@ -48,11 +48,13 @@ func GetRecordById(w http.ResponseWriter, r *http.Request) {
 
 // GetAll - Возвращает полную информаци по всем городам.
 func GetAll(w http.ResponseWriter, r *http.Request) {
-	var response string
+	var response string = "<table>"
+	response += "<tr><th>Id</th><th>Name</th><th>Region</th><th>District</th><th>Population</th><th>Foundation</th></tr>"
 
 	for _, city := range storage {
 		response += toString(city)
 	}
+	response += "</table"
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(response))
@@ -63,5 +65,5 @@ func GetAll(w http.ResponseWriter, r *http.Request) {
 // Хелперы
 
 func toString(city *model.City) string {
-	return strconv.Itoa(int(city.Id)) + "\t" + city.Name + "\n"
+	return "<tr><td>" + strconv.Itoa(int(city.Id)) + "</td><td>" + city.Name + "</td><td>" + city.Region + "</td><td>" + city.District + "</td><td>" + strconv.Itoa(int(city.Population)) + "</td><td>" + strconv.Itoa(int(city.Foundation)) + "</td></tr>"
 }
