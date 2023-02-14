@@ -1,22 +1,26 @@
 package main
 
 import (
+	"net/http"
 	"users/pkg/storage"
+
+	"github.com/go-chi/chi"
 )
 
 func main() {
-	// user1 := user.User{
-	// 	Name: "Вася",
-	// 	Age:  22,
-	// }
+	r := chi.NewRouter()
 
-	// user2 := user.User{
-	// 	Name: "Миша",
-	// 	Age:  23,
-	// }
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("welcome"))
+	})
+	// r.Post("/create", storage.Create)
+	// r.Post("/make_friends", storage.MakeFriends)
+	// r.Delete("/user", storage.DeleteUser)
+	// r.Get("/friends/{user_id}", storage.Friends)
+	// r.Put("/{user_id}", storage.Update)
 
-	// users := []*user.User{}
-	// users = append(users, &user1, &user2)
+	r.Get("/cities", storage.GetAll)
+	r.Get("/city/{city_id}", storage.GetRecordById)
 
-	storage.Get()
+	http.ListenAndServe("localhost:8080", r)
 }
