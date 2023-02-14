@@ -15,8 +15,8 @@ func main() {
 	})
 	r.Get("/cities", storage.GetAll)
 	r.Get("/city/{city_id}", storage.GetRecordById)
+	r.Post("/create", storage.Create)
 
-	// r.Post("/create", storage.Create)
 	// r.Post("/make_friends", storage.MakeFriends)
 	// r.Delete("/user", storage.DeleteUser)
 	// r.Get("/friends/{user_id}", storage.Friends)

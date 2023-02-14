@@ -1,10 +1,10 @@
 package model
 
 type City struct {
-	Id         uint64 `csv:"id"`
-	Name       string `csv:"name"`
-	Region     string `csv:"region"`
-	District   string `csv:"district"`
-	Population uint   `csv:"population"`
-	Foundation uint16 `csv:"foundation"`
+	Id         uint64 `csv:"id" json:"-"`
+	Name       string `csv:"name" json:"name"`
+	Region     string `csv:"region" json:"region"`
+	District   string `csv:"district" json:"district"`
+	Population uint   `csv:"population" json:"population"`
+	Foundation uint16 `csv:"foundation" json:"foundation"`
 }
