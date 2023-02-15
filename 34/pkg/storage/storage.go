@@ -324,6 +324,21 @@ func ListCities(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// ShutDown - Завершение программы и запись из оперативной памяти в файл
+// изменённой и новой информации по городам
+func ShutDown() {
+	cities := storage
+
+	// Читаем файл CSV с информацией о городах
+	file, err := os.OpenFile("data/cities.csv", os.O_RDWR|os.O_CREATE, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	gocsv.MarshalFile(&cities, file)
+}
+
 // ***
 // Хелперы
 

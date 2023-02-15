@@ -1,7 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
 	"users/pkg/storage"
 
 	"github.com/go-chi/chi"
@@ -23,8 +29,20 @@ func main() {
 		r.Post("/by-option", storage.ListCities)
 	})
 
-	// r.Post("/make_friends", storage.MakeFriends)
-	// r.Get("/friends/{user_id}", storage.Friends)
-
 	http.ListenAndServe("localhost:8080", r)
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+	for {
+		time.Sleep(time.Millisecond * 100)
+		select {
+		case <-sigChan:
+			fmt.Println("Завершение сервера")
+			storage.ShutDown()
+			return
+		default:
+			fmt.Println("подождём")
+		}
+	}
 }
