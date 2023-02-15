@@ -219,8 +219,117 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// ListCities - Возвращает список городов по указанному признаку.
+// Варианты запросов:
+// 1) {"region":"region_name"} города с таким регионои
+// 2) {"district":"district_name"} города с таким округом
+// 3) {"population":[{"from":1,"to":2}]} диапазон численности
+// 4) {"foundation":[{"from":1,"to":2}]} диапазон по году основания
+func ListCities(w http.ResponseWriter, r *http.Request) {
+	// Читаю запрос
+	content, err := ioutil.ReadAll((r.Body))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	defer r.Body.Close()
+
+	type Range struct {
+		From uint `json:"from,omitempty"`
+		To   uint `json:"to,omitempty"`
+	}
+
+	type changeOptions struct {
+		Region     string `json:"region,omitempty"`
+		District   string `json:"district,omitempty"`
+		Population Range  `json:"population,omitempty"`
+		Foundation Range  `json:"foundation,omitempty"`
+	}
+
+	var options changeOptions
+
+	if err := json.Unmarshal(content, &options); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(err.Error()))
+		return
+	}
+
+	var maxPopulation uint
+	for _, city := range storage {
+		if city.Population > maxPopulation {
+			maxPopulation = city.Population
+		}
+	}
+	var maxFoundation uint
+	for _, city := range storage {
+		if city.Foundation > maxFoundation {
+			maxFoundation = city.Foundation
+		}
+	}
+
+	response := ""
+	// неправильный запрос, или правильный, но ничего нешли?
+	var correctRequest bool
+	// Предполагаю, что будет использован один из вариантов запроса.
+	// Поэтому определяем запрос по первому не пустому полю.
+	if options.Region != "" {
+		for _, city := range storage {
+			if city.Region == options.Region {
+				response += toStr(city)
+			}
+		}
+		correctRequest = true
+	} else if options.District != "" {
+		for _, city := range storage {
+			if city.District == options.District {
+				response += toStr(city)
+			}
+		}
+		correctRequest = true
+	} else if options.Population.From > 0 || options.Population.To > 0 {
+		if options.Population.To < options.Population.From {
+			options.Population.To = maxPopulation
+		}
+		for _, city := range storage {
+			if city.Population >= options.Population.From && city.Population <= options.Population.To {
+				response += toStr(city)
+			}
+		}
+		correctRequest = true
+	} else if options.Foundation.From > 0 || options.Foundation.To > 0 {
+		if options.Foundation.To < options.Foundation.From {
+			options.Foundation.To = maxFoundation
+		}
+		for _, city := range storage {
+			if city.Foundation >= options.Foundation.From && city.Foundation <= options.Foundation.To {
+				response += toStr(city)
+			}
+		}
+		correctRequest = true
+	}
+	if correctRequest {
+		response = "По ваашему запросу ничего не найдено\n"
+	} else {
+		response = "Некорректый запрос\n"
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+	if correctRequest {
+		w.WriteHeader(http.StatusOK)
+	} else {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+	w.Write([]byte(response))
+	return
+}
+
 // ***
 // Хелперы
+
+func toStr(city *model.City) string {
+	return strconv.Itoa(int(city.Id)) + "\t" + city.Name + "\t" + city.Region + "\t" + city.District + "\t" + strconv.Itoa(int(city.Population)) + "\t" + strconv.Itoa(int(city.Foundation)) + "\n"
+}
 
 func toRow(city *model.City) string {
 	return "<tr><td>" + strconv.Itoa(int(city.Id)) + "</td><td>" + city.Name + "</td><td>" + city.Region + "</td><td>" + city.District + "</td><td>" + strconv.Itoa(int(city.Population)) + "</td><td>" + strconv.Itoa(int(city.Foundation)) + "</td></tr>"

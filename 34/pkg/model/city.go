@@ -6,5 +6,5 @@ type City struct {
 	Region     string `csv:"region" json:"region"`
 	District   string `csv:"district" json:"district"`
 	Population uint   `csv:"population" json:"population"`
-	Foundation uint16 `csv:"foundation" json:"foundation"`
+	Foundation uint   `csv:"foundation" json:"foundation"`
 }
