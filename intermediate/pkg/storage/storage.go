@@ -337,6 +337,8 @@ func ShutDown() {
 	defer file.Close()
 
 	gocsv.MarshalFile(&cities, file)
+
+	fmt.Println("Файл обновлён")
 }
 
 // ***

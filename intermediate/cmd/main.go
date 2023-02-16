@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"users/pkg/storage"
 
@@ -29,20 +27,22 @@ func main() {
 		r.Post("/by-option", storage.ListCities)
 	})
 
-	http.ListenAndServe("localhost:8080", r)
+	go func() {
+		http.ListenAndServe("localhost:8080", r)
+	}()
 
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
+	// <-sigChan
+	// fmt.Println("Done!", <-sigChan)
+
 	for {
-		time.Sleep(time.Millisecond * 100)
 		select {
 		case <-sigChan:
-			fmt.Println("Завершение сервера")
 			storage.ShutDown()
 			return
-		default:
-			fmt.Println("подождём")
 		}
 	}
+
 }
