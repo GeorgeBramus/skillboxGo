@@ -23,3 +23,13 @@ func (c Codes) Get(codeF string) (*standart.Codes, error) {
 	}
 	return code, nil
 }
+
+// ***
+// Эксперименты
+
+type SMSData struct {
+	User    string
+	Message string
+}
+
+type SMS []
