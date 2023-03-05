@@ -1,11 +1,21 @@
 package message
 
-type Message struct {
-	Message string
+type SMS struct {
+	Text string
 }
 
-func New(m string) *Message {
-	return &Message{
-		Message: m,
+func NewSMS(text string) *SMS {
+	return &SMS{
+		Text: text,
+	}
+}
+
+type MMS struct {
+	Text string
+}
+
+func NewMMS(text string) *MMS {
+	return &MMS{
+		Text: text,
 	}
 }
